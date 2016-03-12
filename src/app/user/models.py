@@ -1,5 +1,5 @@
-from app import db
-from app.general.models import Base
+from .. import db
+from ..general.models import Base
 
 from sqlalchemy.dialects.postgresql import JSON
 

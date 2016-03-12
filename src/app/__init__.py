@@ -19,7 +19,7 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 # Import a module / component
-from app.user import user_blueprint
+from .user import user_blueprint
 
 # Register blueprint(s)
 app.register_blueprint(user_blueprint)
