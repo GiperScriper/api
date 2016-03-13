@@ -5,7 +5,7 @@ from sqlalchemy.dialects.postgresql import JSON
 
 # Define a User table
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
     name = db.Column(db.String(100), unique=True)
     age = db.Column(db.Integer)
     new_field = db.Column(db.Integer)

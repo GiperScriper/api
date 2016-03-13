@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, jsonify
 # Import password / encryption helper tools
 from werkzeug import check_password_hash, generate_password_hash
 # Import the database object from the main app module
@@ -9,7 +9,7 @@ import json
 
 @user_blueprint.route('/test', methods=['GET', 'POST'])
 def test():
-    return json.dumps({'message': 'hello form users.controller'})
+    return jsonify({'message': 'hello form users.controller'})
 
 @user_blueprint.route('/users', methods=['GET', 'POST'])
 def create_user():
@@ -18,7 +18,7 @@ def create_user():
     db.session.add(user)
     db.session.commit()
 
-    return json.dumps(
+    return jsonify(
         {
             'test': 'test message',
             'data': data
