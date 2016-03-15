@@ -1,7 +1,10 @@
+"""Main App Module."""
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask_script import Manager
+
 from flask_migrate import Migrate, MigrateCommand
+
+from flask_script import Manager
 
 # Define the WSGI application object
 app = Flask(__name__)

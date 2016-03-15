@@ -1,7 +1,8 @@
+from sqlalchemy.dialects.postgresql import JSON
+
 from .. import db
 from ..general.models import Base
 
-from sqlalchemy.dialects.postgresql import JSON
 
 # Define a User table
 class User(Base):
@@ -12,6 +13,9 @@ class User(Base):
     json_field = db.Column(JSON)
     email = db.Column(db.String(200))
 
-    def __init__(self, name, json):
-        self.name = name
-        self.json_field = json
+    def __init__(self, data):
+        try:
+            self.name = data['name']
+            self.json_field = data['json']
+        except KeyError as e:
+            raise Exception('Invalid user: missing ' + e.args[0])
