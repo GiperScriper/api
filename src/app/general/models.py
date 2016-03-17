@@ -1,3 +1,4 @@
+"""General Model Module."""
 from .. import db
 
 
