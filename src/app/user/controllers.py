@@ -33,16 +33,19 @@ def create_user():
 
 
 @user_blueprint.route('/users/<int:id>', methods=['PUT'])
-def update_user():
+def update_user(id):
     """Update user."""
     data = request.get_json()
-    user = User.query.get_or_404(id)
-    db.session.add(user)
+    db.session.query(User).filter_by(id=id).update(data)
     db.session.commit()
 
-    return jsonify(
-        {
-            'data': data,
-            'status': 'success'
-        }
-    ), 201
+    return jsonify({}), 200
+
+
+@user_blueprint.route('/users/<int:id>', methods=['DELETE'])
+def remove_user(id):
+    """Remove user."""
+    User.query.filter_by(id=id).delete()
+    db.session.commit()
+
+    return jsonify({}), 204
