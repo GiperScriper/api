@@ -1,28 +1,33 @@
 """User Controller."""
-from flask import jsonify, request
-# Import password / encryption helper tools
-# from werkzeug import check_password_hash, generate_password_hash
+from flask import jsonify, g, request
 # Import the database object from the main app module
-from . import user_blueprint
+from . import users_blueprint
 from .models import User
+from ..general.auth_handler import auth
 from .. import db
 
 
-@user_blueprint.route('/users/', methods=['GET'])
+@users_blueprint.route('/get-token')
+@auth.login_required
+def get_auth_token():
+    return jsonify({'token': g.user.generate_auth_token()})
+
+
+@users_blueprint.route('/users', methods=['GET'])
 def get_users():
     """Get all users."""
     users_urls = [user.get_url() for user in User.query.all()]
     return jsonify({'users': users_urls})
 
 
-@user_blueprint.route('/users/<int:id>', methods=['GET'])
+@users_blueprint.route('/users/<int:id>', methods=['GET'])
 def get_user(id):
     """Get a specific user."""
-    user = User.query.get_or_404(id).export_data()
+    user = User.query.get_or_404(id).serialize
     return jsonify(user)
 
 
-@user_blueprint.route('/users/', methods=['POST'])
+@users_blueprint.route('/users', methods=['POST'])
 def create_user():
     """Create user."""
     data = request.get_json()
@@ -32,7 +37,7 @@ def create_user():
     return jsonify({}), 201, {'Location': user.get_url()}
 
 
-@user_blueprint.route('/users/<int:id>', methods=['PUT'])
+@users_blueprint.route('/users/<int:id>', methods=['PUT'])
 def update_user(id):
     """Update user."""
     data = request.get_json()
@@ -42,7 +47,7 @@ def update_user(id):
     return jsonify({}), 200
 
 
-@user_blueprint.route('/users/<int:id>', methods=['DELETE'])
+@users_blueprint.route('/users/<int:id>', methods=['DELETE'])
 def remove_user(id):
     """Remove user."""
     User.query.filter_by(id=id).delete()

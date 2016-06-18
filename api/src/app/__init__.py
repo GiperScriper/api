@@ -22,10 +22,12 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 # Import a module / component
-from .user import user_blueprint
+from .user import users_blueprint
+from .post import posts_blueprint
 
 # Register blueprint(s)
-app.register_blueprint(user_blueprint)
+app.register_blueprint(users_blueprint)
+app.register_blueprint(posts_blueprint)
 
 # Build the database:
 # This will create the database file using SQLAlchemy
